@@ -11,32 +11,34 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* The four bands of the brand palette. */
-  --band-1: #222831;
-  --band-2: #393e46;
-  --band-3: #948979;
-  --band-4: #dfd3b8;
+  /* Brand palette: red primary, navy secondary, white tertiary. */
+  --band-1: #00226D;
+  --band-2: #003399;
+  --band-3: #F9002D;
+  --band-4: #ff4d6d;
 
-  --ground: #efe7d4;
-  --ground-alt: #e6dcc4;
-  --panel: #f6f1e4;
-  --ink: #222831;
-  --body: #393e46;
-  --muted: #7c7365;
-  --rule: rgba(34, 40, 49, 0.16);
-  --rule-soft: rgba(34, 40, 49, 0.08);
-  --btn-bg: #222831;
-  --btn-fg: #efe7d4;
+  --ground: #ffffff;
+  --ground-alt: #f5f5f5;
+  --panel: #f7f7f7;
+  --raise: #f0f0f0;
+  --accent: #F9002D;
+  --ink: #00226D;
+  --body: #000000;
+  --muted: #000000;
+  --rule: rgba(0, 0, 0, 0.15);
+  --rule-soft: rgba(0, 0, 0, 0.07);
+  --btn-bg: #F9002D;
+  --btn-fg: #ffffff;
 
-  /* Semantics, hue-shifted off the taupe so nothing foreign enters the palette. */
-  --settled: #5f6c4d;
-  --owed: #8c5b4a;
-  --alarm: #8c3b2c;
+  /* Semantics mapped to the new palette. */
+  --settled: #00226D;
+  --owed: #c4001f;
+  --alarm: #a80019;
 
-  --mark-1: #222831;
-  --mark-2: #393e46;
-  --mark-3: #948979;
-  --mark-4: #c3b394;
+  --mark-1: #00226D;
+  --mark-2: #00226D;
+  --mark-3: #F9002D;
+  --mark-4: #ff4d6d;
 
   /* No webfont URLs anywhere: a blocked CDN would fall back silently and the
      whole typographic identity would vanish. These are stacks of faces that
@@ -44,14 +46,24 @@
   --f-display: "Hoefler Text", "Baskerville", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --f-body: "Avenir Next", Avenir, "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
   --f-data: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Cascadia Mono", Consolas, monospace;
+  --f-logo: "Stardom", "Hoefler Text", Georgia, serif;
 
-  --t-label: 0.6875rem;
-  --t-sm: 0.8125rem;
-  --t-base: 1.0625rem;
-  --t-lg: 1.1875rem;
-  --t-xl: 1.5rem;
-  --t-2xl: 2.125rem;
-  --t-hero: clamp(2.5rem, 6.2vw, 4rem);
+  /* Raised across the board. The previous scale ran most running prose at
+     13px — a caption size being asked to carry paragraphs, and the single
+     biggest reason the page read as austere rather than considered. */
+  --t-label: 0.75rem;
+  --t-sm: 0.9375rem;
+  --t-base: 1.125rem;
+  --t-lg: 1.375rem;
+  --t-xl: 1.75rem;
+  --t-2xl: 2.5rem;
+  --t-hero: clamp(2.75rem, 6.5vw, 4.75rem);
+
+  /* Intro paragraphs are set in the display serif, a step up from body. A
+     second reading face is what gives a text-heavy page its texture: with one
+     face at one size, hierarchy has to come entirely from scale, and the
+     result reads flat however carefully it is spaced. */
+  --t-lede: clamp(1.25rem, 1.9vw, 1.5rem);
 
   /* The sheet runs wide and the gutter stays generous, so the page reads as a
      spread rather than a column floating in the middle of a large screen.
@@ -65,64 +77,70 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ground: #1b2129;
-    --ground-alt: #202730;
-    --panel: #222831;
-    --ink: #e7ddc6;
-    --body: #c6bca8;
-    --muted: #948979;
-    --rule: rgba(223, 211, 184, 0.18);
-    --rule-soft: rgba(223, 211, 184, 0.09);
-    --btn-bg: #dfd3b8;
-    --btn-fg: #222831;
-    --settled: #9aa781;
-    --owed: #bd8674;
-    --alarm: #d08d7c;
-    --mark-1: #dfd3b8;
-    --mark-2: #948979;
-    --mark-3: #5c6068;
-    --mark-4: #393e46;
+    --ground: #0a0f1e;
+    --ground-alt: #0f1628;
+    --panel: #141c32;
+    --raise: #1a2340;
+    --accent: #F9002D;
+    --ink: #e8edf8;
+    --body: #b0bcd8;
+    --muted: #6b7a99;
+    --rule: rgba(232, 237, 248, 0.15);
+    --rule-soft: rgba(232, 237, 248, 0.07);
+    --btn-bg: #F9002D;
+    --btn-fg: #ffffff;
+    --settled: #7b9fd4;
+    --owed: #ff4d6d;
+    --alarm: #ff6b82;
+    --mark-1: #e8edf8;
+    --mark-2: #7b9fd4;
+    --mark-3: #F9002D;
+    --mark-4: #003399;
   }
 }
 
 :root[data-theme="light"] {
-  --ground: #efe7d4;
-  --ground-alt: #e6dcc4;
-  --panel: #f6f1e4;
-  --ink: #222831;
-  --body: #393e46;
-  --muted: #7c7365;
-  --rule: rgba(34, 40, 49, 0.16);
-  --rule-soft: rgba(34, 40, 49, 0.08);
-  --btn-bg: #222831;
-  --btn-fg: #efe7d4;
-  --settled: #5f6c4d;
-  --owed: #8c5b4a;
-  --alarm: #8c3b2c;
-  --mark-1: #222831;
-  --mark-2: #393e46;
-  --mark-3: #948979;
-  --mark-4: #c3b394;
+  --ground: #ffffff;
+  --ground-alt: #f5f5f5;
+  --panel: #f7f7f7;
+  --raise: #f0f0f0;
+  --accent: #F9002D;
+  --ink: #00226D;
+  --body: #000000;
+  --muted: #000000;
+  --rule: rgba(0, 0, 0, 0.15);
+  --rule-soft: rgba(0, 0, 0, 0.07);
+  --btn-bg: #F9002D;
+  --btn-fg: #ffffff;
+  --settled: #00226D;
+  --owed: #c4001f;
+  --alarm: #a80019;
+  --mark-1: #00226D;
+  --mark-2: #00226D;
+  --mark-3: #F9002D;
+  --mark-4: #ff4d6d;
 }
 
 :root[data-theme="dark"] {
-  --ground: #1b2129;
-  --ground-alt: #202730;
-  --panel: #222831;
-  --ink: #e7ddc6;
-  --body: #c6bca8;
-  --muted: #948979;
-  --rule: rgba(223, 211, 184, 0.18);
-  --rule-soft: rgba(223, 211, 184, 0.09);
-  --btn-bg: #dfd3b8;
-  --btn-fg: #222831;
-  --settled: #9aa781;
-  --owed: #bd8674;
-  --alarm: #d08d7c;
-  --mark-1: #dfd3b8;
-  --mark-2: #948979;
-  --mark-3: #5c6068;
-  --mark-4: #393e46;
+  --ground: #0a0f1e;
+  --ground-alt: #0f1628;
+  --panel: #141c32;
+  --raise: #1a2340;
+  --accent: #F9002D;
+  --ink: #e8edf8;
+  --body: #b0bcd8;
+  --muted: #6b7a99;
+  --rule: rgba(232, 237, 248, 0.15);
+  --rule-soft: rgba(232, 237, 248, 0.07);
+  --btn-bg: #F9002D;
+  --btn-fg: #ffffff;
+  --settled: #7b9fd4;
+  --owed: #ff4d6d;
+  --alarm: #ff6b82;
+  --mark-1: #e8edf8;
+  --mark-2: #7b9fd4;
+  --mark-3: #F9002D;
+  --mark-4: #003399;
 }
 
 /* ── base ────────────────────────────────────────────────────────────────── */
@@ -146,7 +164,7 @@ body {
   color: var(--body);
   font-family: var(--f-body);
   font-size: var(--t-base);
-  line-height: 1.62;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -166,6 +184,7 @@ h4 {
 
 p {
   margin: 0;
+  text-wrap: pretty;
 }
 
 a {
@@ -210,14 +229,14 @@ main {
   font-size: var(--t-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
-  padding-top: 0.5em;
-  border-top: 1px solid var(--rule);
+  color: var(--accent);
+  padding-top: 0.75em;
+  border-top: 2px solid var(--ink);
   line-height: 1.7;
 }
 
 .band {
-  padding-block: clamp(3.5rem, 8vw, 6rem);
+  padding-block: clamp(4.25rem, 9vw, 7.5rem);
   border-top: 1px solid var(--rule-soft);
 }
 
@@ -236,13 +255,19 @@ main {
 }
 
 .lede {
-  max-width: var(--measure);
-  font-size: var(--t-lg);
+  max-width: 33rem;
+  font-family: var(--f-display);
+  font-size: var(--t-lede);
+  line-height: 1.45;
+  letter-spacing: -0.003em;
+  color: var(--body);
+  text-wrap: pretty;
 }
 
 .head {
-  font-size: var(--t-2xl);
-  max-width: 20ch;
+  font-size: clamp(1.9rem, 3.6vw, 2.85rem);
+  max-width: 19ch;
+  letter-spacing: -0.018em;
 }
 
 .fineprint {
@@ -406,13 +431,24 @@ main {
   color: var(--btn-fg);
   border-radius: 2px;
   cursor: pointer;
-  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+  transition: background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .btn:hover {
-  background: var(--band-2);
-  border-color: var(--band-2);
-  color: #efe7d4;
+  background: #00226D;
+  border-color: #00226D;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(249, 0, 45, 0.18);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .btn:disabled {
@@ -494,23 +530,124 @@ main {
 /* ── hero ────────────────────────────────────────────────────────────────── */
 
 .hero {
-  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3.5rem, 8vw, 6rem);
+  /* No padding — the billboard bleeds edge to edge within the sheet. */
+  padding-block: clamp(2rem, 4vw, 3rem) 0;
 }
 
-.hero__grid {
+/* Full-bleed image container. The placeholder (and later a real <img>) fills
+   this entirely; the overlay sits on top. */
+.hero__billboard {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.hero__bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+  filter: brightness(0.55);
+  /* Fix height so the billboard has a defined size */
+  aspect-ratio: 21/9;
+}
+
+/* The text lives in an absolutely-positioned layer over the image. */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(1.75rem, 5vw, 4rem);
+}
+
+.hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 36rem;
+}
+
+.hero__copy h1 {
+  font-size: clamp(2.25rem, 5.5vw, 4rem);
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  color: #ffffff;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+}
+
+.hero__sub {
+  font-family: var(--f-body);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: rgba(255,255,255,0.88);
+  line-height: 1.55;
+  max-width: 32rem;
+}
+
+/* Ghost button — white outline, used only on the dark hero overlay. */
+.btn--ghost {
+  background: transparent;
+  border-color: rgba(255,255,255,0.6);
+  color: #ffffff;
+}
+
+.btn--ghost:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+/* Quick-access product strip — the row of loan categories below the billboard.
+   Inspired by BofA's product shortcut row: scannable, direct, no decoration. */
+.hero__strip {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
-  gap: clamp(2.5rem, 5vw, 4.5rem);
-  align-items: start;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid var(--rule);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+  margin-bottom: clamp(3rem, 7vw, 5.5rem);
 }
 
-.hero h1 {
-  font-size: var(--t-hero);
-  letter-spacing: -0.022em;
+.strip__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1.1rem 1.25rem;
+  text-decoration: none;
+  font-size: var(--t-sm);
+  font-family: var(--f-body);
+  color: var(--ink);
+  background: var(--ground);
+  border-right: 1px solid var(--rule);
+  border-top: 3px solid transparent;
+  transition: background-color 180ms ease, border-top-color 180ms ease, color 180ms ease;
 }
 
-.hero .lede {
-  max-width: 31rem;
+.strip__item:last-child {
+  border-right: none;
+}
+
+.strip__item:hover {
+  background: var(--panel);
+  border-top-color: var(--accent);
+  color: var(--accent);
+}
+
+.strip__item svg {
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.strip__item:hover svg {
+  opacity: 1;
+  transform: translateX(3px);
 }
 
 /* Interior page headers — quieter than the home hero, same voice. */
@@ -520,6 +657,7 @@ main {
 }
 
 .pagehead h1 {
+  letter-spacing: -0.022em;
   font-size: clamp(2rem, 5vw, 3.25rem);
   letter-spacing: -0.022em;
   max-width: 18ch;
@@ -671,6 +809,63 @@ main {
   max-width: 21rem;
 }
 
+/* ── why-not-one-bank grid ───────────────────────────────────────────────── */
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule);
+  margin-top: 2.5rem;
+}
+
+.why-item {
+  background: var(--ground);
+  padding: 2rem 1.75rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  border-left: 3px solid transparent;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.why-item:hover {
+  border-left-color: var(--accent);
+  background: var(--panel);
+}
+
+.why-item__num {
+  font-family: var(--f-data);
+  font-size: var(--t-label);
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.why-item__title {
+  font-size: var(--t-lg);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.why-item__note {
+  font-size: var(--t-sm);
+  color: var(--body);
+  line-height: 1.65;
+}
+
+.why-media {
+  margin-top: 1px;
+  border: 1px solid var(--rule);
+  border-top: none;
+}
+
+.why-media .media-ph {
+  border: none;
+  border-radius: 0;
+}
+
 /* ── ruled columns ───────────────────────────────────────────────────────── */
 
 .columns {
@@ -687,9 +882,9 @@ main {
 .column {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ink);
+  gap: 0.7rem;
+  padding-top: 1.15rem;
+  border-top: 2px solid var(--ink);
 }
 
 .column h3 {
@@ -697,7 +892,10 @@ main {
 }
 
 .column p {
-  font-size: 0.9375rem;
+  font-size: var(--t-sm);
+  color: var(--body);
+  line-height: 1.65;
+  max-width: 46ch;
 }
 
 .column .fineprint {
@@ -756,6 +954,7 @@ main {
 .catrule h2 {
   font-size: var(--t-xl);
   white-space: nowrap;
+  letter-spacing: -0.015em;
 }
 
 .catrule::after {
@@ -771,24 +970,33 @@ main {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) auto;
   gap: 0.35rem clamp(1rem, 3vw, 2.5rem);
   align-items: baseline;
-  padding-block: 1.4rem;
+  padding-block: 1.7rem;
   border-bottom: 1px solid var(--rule-soft);
   text-decoration: none;
   color: inherit;
-  transition: background-color 140ms ease;
+  transition: background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .entry:hover {
   background: var(--panel);
+  padding-left: 0.5rem;
 }
 
 .entry h3 {
   font-size: var(--t-lg);
+  line-height: 1.25;
+  transition: color 140ms ease;
+}
+
+.entry:hover h3 {
+  color: var(--accent);
 }
 
 .entry p {
-  font-size: 0.9375rem;
+  font-size: var(--t-sm);
   color: var(--body);
+  line-height: 1.6;
 }
 
 .entry__rate {
@@ -808,6 +1016,225 @@ main {
   color: var(--muted);
 }
 
+/* A product listing that is not a link — the roadmap entries. Placed after
+   .entry:hover so it wins on source order at equal specificity. */
+.entry--static {
+  cursor: default;
+}
+
+.entry--static:hover {
+  background: transparent;
+}
+
+.group {
+  margin-top: 3rem;
+}
+
+.group__blurb {
+  font-size: var(--t-sm);
+  color: var(--body);
+  line-height: 1.65;
+  max-width: 52ch;
+  margin-bottom: 1.75rem;
+}
+
+/* ── the hero panel: what we read before approaching a lender ────────────── */
+
+.hero__card {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1.85rem clamp(1.5rem, 2.5vw, 2.1rem) 1.6rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero__card .panel__head {
+  flex-shrink: 0;
+}
+
+.hero__card .assess {
+  flex: 1;
+}
+
+.hero__card .panel__foot {
+  flex-shrink: 0;
+}
+
+.panel__head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.panel__head strong {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: var(--t-xl);
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.panel__foot {
+  padding-top: 1.15rem;
+  margin-top: 0.5rem;
+  border-top: 2px solid var(--ink);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.assess {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.assess--grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(1rem, 2vw, 1.5rem);
+}
+
+.assess--grid .assess__row {
+  border-bottom: 1px solid var(--rule-soft);
+  border-right: none;
+}
+
+.assess__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  padding-block: 0.95rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.assess__what {
+  font-family: var(--f-display);
+  font-size: var(--t-lg);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.assess__detail {
+  font-family: var(--f-data);
+  font-size: var(--t-label);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* ── trust indicators ────────────────────────────────────────────────────── */
+
+/* Hairline gaps rather than borders on each item, so the grid reads as one
+   ruled sheet however many items wrap onto the last row. */
+/* Five items on a three-column grid: the last spans two, so the block fills
+   exactly two rows with no dead cells. */
+.trust {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.trust__item {
+  grid-column: span 2;
+  background: var(--raise);
+  padding: 2rem clamp(1.25rem, 2vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.trust__item:nth-child(4),
+.trust__item:nth-child(5) {
+  grid-column: span 3;
+}
+.trust__label {
+  font-family: var(--f-data);
+  font-size: var(--t-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.trust__item h3 {
+  font-size: var(--t-lg);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.trust__item p {
+  font-size: var(--t-sm);
+  color: var(--body);
+  line-height: 1.6;
+  /* The feature cell is twice as wide as the others; without this its single
+     paragraph runs to ~95 characters, well past a comfortable measure. */
+  max-width: 44ch;
+}
+
+/* ── the customer journey ────────────────────────────────────────────────── */
+
+/* The only numbered sequence on the site. A file really does move through
+   these in order, so the numerals carry information rather than decoration. */
+.journey {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  counter-reset: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0 clamp(1.25rem, 3vw, 2.25rem);
+  align-items: start;
+  padding-block: 1.9rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.step:first-child {
+  border-top: 1px solid var(--ink);
+}
+
+.step:last-child {
+  border-bottom: none;
+}
+
+/* Large display figures rather than small mono ones. This is the one sequence
+   on the site, so the numerals are allowed to carry it. */
+.step__no {
+  font-family: var(--f-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 2.25rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  padding-top: 0.1rem;
+}
+
+.step__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.step__body h3 {
+  font-size: var(--t-xl);
+}
+
+.step__body p {
+  font-size: var(--t-sm);
+  color: var(--body);
+  line-height: 1.65;
+  max-width: 58ch;
+}
+
 /* ── tables ──────────────────────────────────────────────────────────────── */
 
 .table-scroll {
@@ -818,7 +1245,7 @@ main {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9375rem;
+  font-size: var(--t-sm);
 }
 
 .table--fees {
@@ -1033,6 +1460,62 @@ tbody tr:last-child td {
   color: var(--alarm);
 }
 
+/* Optional extras, folded away. A first-contact form should ask five things;
+   anyone who wants to say more can open this, and everyone else never sees it. */
+.more {
+  border-top: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule-soft);
+  padding-block: 0.75rem;
+}
+
+.more > summary {
+  font-family: var(--f-data);
+  font-size: var(--t-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.more > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* A rotating caret rather than the platform triangle, so the control matches
+   the rest of the type. */
+.more > summary::before {
+  content: "+";
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--muted);
+  transition: transform 140ms ease;
+}
+
+.more[open] > summary::before {
+  content: "−";
+}
+
+.more > summary:hover {
+  color: var(--ink);
+}
+
+.more__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+.hint {
+  font-size: var(--t-label);
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
+
 .consent {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -1125,6 +1608,137 @@ tbody tr:last-child td {
   font-size: var(--t-sm);
   color: var(--muted);
   max-width: 48rem;
+}
+
+/* ── lender cards (partners page) ───────────────────────────────────────── */
+
+.lendergrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule);
+  margin-top: 1.5rem;
+}
+
+.lender-card {
+  position: relative;
+  background: var(--ground);
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.lender-card__logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lender-card__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--ink);
+}
+
+.lender-card__name {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(249, 0, 45, 0.04);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lender-card__name span {
+  font-family: var(--f-display);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.lender-card:hover .lender-card__logo {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.lender-card:hover .lender-card__name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── media placeholders ──────────────────────────────────────────────────── */
+
+.media-ph {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--muted);
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.media-ph--video {
+  background: var(--ink);
+  color: rgba(255,255,255,0.5);
+  border-color: transparent;
+}
+
+.media-ph__label {
+  font-family: var(--f-data);
+  font-size: var(--t-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ── split: text + media side by side ────────────────────────────────────── */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.split--media-first {
+  direction: rtl;
+}
+
+.split--media-first > * {
+  direction: ltr;
+}
+
+/* ── video section ────────────────────────────────────────────────────────── */
+
+.video-band {
+  padding-block: clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.video-band__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
 }
 
 /* ── prose, for the policy pages ─────────────────────────────────────────── */
@@ -1518,15 +2132,25 @@ tbody tr:last-child td {
 
 /* ── motion ──────────────────────────────────────────────────────────────── */
 
+/* Page fade-in — the whole main content settles in on load. */
+main {
+  animation: pagein 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pagein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .settle {
   opacity: 0;
-  animation: settle 520ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  animation: settle 680ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes settle {
   from {
     opacity: 0;
-    transform: translateY(7px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -1537,9 +2161,9 @@ tbody tr:last-child td {
 /* Scroll reveal, applied sparingly — see Reveal.tsx. */
 .reveal {
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 560ms cubic-bezier(0.2, 0.7, 0.3, 1),
-    transform 560ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  transform: translateY(16px);
+  transition: opacity 640ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal[data-shown="true"] {
@@ -1547,9 +2171,22 @@ tbody tr:last-child td {
   transform: none;
 }
 
+/* .reveal starts hidden and is shown by JS. If scripting is unavailable the
+   headings would stay invisible forever, so opt out entirely in that case —
+   the animation is an enhancement, the content is not. */
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  main {
+    animation: none;
   }
   .settle {
     opacity: 1;
@@ -1580,8 +2217,22 @@ tbody tr:last-child td {
 }
 
 @media (max-width: 60rem) {
-  .hero__grid {
-    grid-template-columns: minmax(0, 1fr);
+  .hero__bg {
+    aspect-ratio: 16/9;
+  }
+  .hero__strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .hero__strip .strip__item:nth-child(4),
+  .hero__strip .strip__item:nth-child(5) {
+    border-top: 1px solid var(--rule);
+  }
+  .why-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .why-grid .why-item:nth-child(4),
+  .why-grid .why-item:nth-child(5) {
+    grid-column: span 1;
   }
   .columns,
   .columns--two {
@@ -1600,8 +2251,20 @@ tbody tr:last-child td {
   .entry p {
     grid-column: 1 / -1;
   }
+  .split,
+  .video-band__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .split--media-first {
+    direction: ltr;
+  }
   .detail {
     grid-template-columns: minmax(0, 1fr);
+  }
+  /* Two trust items per row reads better than three cramped ones once the
+     sentence under each has to wrap. */
+  .trust {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1680,5 +2343,71 @@ tbody tr:last-child td {
 
   .table-scroll {
     overflow-x: visible;
+  }
+
+  .trust {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__bg {
+    aspect-ratio: 4/3;
+  }
+  .hero__strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hero__strip .strip__item:nth-child(5) {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+  .why-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .why-grid .why-item:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+
+  /* The category rule keeps its heading on one line by design, which a phone
+     cannot honour once a caption sits beside it — "Future financial solutions"
+     plus "In development" pushed 29px past the viewport. Let it stack, and
+     swap the trailing flexible rule for a plain underline. */
+  .catrule {
+    flex-wrap: wrap;
+    gap: 0.2rem 0.75rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .catrule h2 {
+    white-space: normal;
+  }
+  .catrule::after {
+    display: none;
+  }
+
+  /* Two CTAs of different label lengths stack into a ragged pair. Full width
+     reads as deliberate. */
+  .actions .btn {
+    flex: 1 1 100%;
+  }
+  .trust__item,
+  .trust__item:nth-child(4),
+  .trust__item:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+  .split,
+  .video-band__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .split--media-first {
+    direction: ltr;
+  }
+
+  /* The numeral rail costs more than it earns at phone width — put the number
+     above the heading instead of beside it. */
+  .step {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .step__no {
+    padding-top: 0;
   }
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import MediaPlaceholder from '@/components/MediaPlaceholder'
 import { SITE } from '@/lib/data/content'
+import LenderCard from '@/components/LenderCard'
 
 export const metadata: Metadata = {
   title: 'Lender panel',
@@ -14,22 +16,31 @@ export default function PartnersPage() {
   return (
     <div className="sheet">
       <header className="pagehead">
-        <p className="fineprint">{total} lenders on panel</p>
-        <h1>Who actually lends you the money.</h1>
-        <p className="lede">
-          Ippo does not lend. Every rupee comes from one of the institutions below, and our job is
-          knowing which of them says yes to a file like yours — and at what price. We list them by
-          name because a panel you cannot see is not a panel.
-        </p>
+        <div className="split" style={{ alignItems: 'start', gap: 'clamp(2rem, 4vw, 3.5rem)' }}>
+          <div className="stack">
+            <p className="fineprint">{total} lenders on panel</p>
+            <h1>Who actually lends you the money.</h1>
+            <p className="lede">
+              Ippo does not lend. Every rupee comes from one of the institutions below, and our job is
+              knowing which of them says yes to a file like yours — and at what price. We list them by
+              name because a panel you cannot see is not a panel.
+            </p>
+          </div>
+          <MediaPlaceholder label="Partner institutions" aspect="4/3" className="settle" />
+        </div>
       </header>
 
       <section className="band band--tight" style={{ borderTop: 'none' }}>
         <div className="catrule">
           <h2>Banks</h2>
         </div>
-        <div className="namegrid">
+        <div className="lendergrid">
           {SITE.lenders.banks.map((b) => (
-            <span key={b}>{b}</span>
+            <LenderCard
+              key={b}
+              name={b}
+              logo={`/logos/banks/${b.toLowerCase().replace(/\s+/g, '-')}.png`}
+            />
           ))}
         </div>
       </section>
@@ -38,9 +49,19 @@ export default function PartnersPage() {
         <div className="catrule">
           <h2>NBFCs</h2>
         </div>
-        <div className="namegrid">
-          {SITE.lenders.nbfcs.map((n) => (
-            <span key={n}>{n}</span>
+        <div className="lendergrid">
+          {SITE.nbfcs?.map((n: string) => (
+            <LenderCard
+              key={n}
+              name={n}
+              logo={`/logos/nbfcs/${n.toLowerCase().replace(/\s+/g, '-')}.png`}
+            />
+          )) ?? SITE.lenders.nbfcs.map((n) => (
+            <LenderCard
+              key={n}
+              name={n}
+              logo={`/logos/nbfcs/${n.toLowerCase().replace(/\s+/g, '-')}.png`}
+            />
           ))}
         </div>
       </section>
@@ -48,13 +69,16 @@ export default function PartnersPage() {
       <section className="band rail">
         <p className="marginalia">Why it matters</p>
         <div>
-          <div className="stack">
-            <h2 className="head">One application, read by everyone at once.</h2>
-            <p className="lede">
-              Applying to lenders one at a time is slow and it is expensive: every hard search
-              leaves a mark, and a run of marks is itself a reason to decline you. We put one file
-              in front of the panel instead.
-            </p>
+          <div className="split">
+            <div className="stack">
+              <h2 className="head">One application, read by everyone at once.</h2>
+              <p className="lede">
+                Applying to lenders one at a time is slow and it is expensive: every hard search
+                leaves a mark, and a run of marks is itself a reason to decline you. We put one file
+                in front of the panel instead.
+              </p>
+            </div>
+            <MediaPlaceholder label="Lender panel" aspect="4/3" />
           </div>
 
           <div className="columns">
@@ -94,7 +118,7 @@ export default function PartnersPage() {
           <h2 className="head">See which of them would take your file.</h2>
           <div className="actions">
             <Link className="btn" href="/enquiry">
-              Check your rate
+              Talk to an expert
             </Link>
             <Link className="btn btn--quiet" href="/about#fees">
               How we get paid

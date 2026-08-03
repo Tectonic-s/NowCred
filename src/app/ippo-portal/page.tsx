@@ -235,8 +235,7 @@ export default function PortalDashboard() {
       <header className="portal__bar">
         <div className="portal__bar-inner">
           <div className="wordmark">
-            <Mark size={18} />
-            <b style={{ fontSize: '1.1rem' }}>{SITE.wordmark.primary}</b>
+            <Mark size={24} />
             <span className="portal__tag">Portal</span>
           </div>
           <div className="actions">
@@ -397,12 +396,18 @@ export default function PortalDashboard() {
                                     <h4>The enquiry</h4>
                                     <dl>
                                       <div>
+                                        <dt>City</dt>
+                                        <dd>{l.city || '—'}</dd>
+                                      </div>
+                                      <div>
                                         <dt>Email</dt>
-                                        <dd>{l.email}</dd>
+                                        {/* Phone-only enquiries are normal now that the form
+                                            no longer requires an address. */}
+                                        <dd>{l.email || 'Phone only'}</dd>
                                       </div>
                                       <div>
                                         <dt>What they do</dt>
-                                        <dd>{l.businessType}</dd>
+                                        <dd>{l.businessType || 'Not asked'}</dd>
                                       </div>
                                       <div>
                                         <dt>Turnover</dt>

@@ -7,27 +7,27 @@ function client() {
   return new Resend(key)
 }
 
-const FROM = process.env.MAIL_FROM ?? 'Ippo Loan <noreply@ippofinserv.in>'
+const FROM = process.env.MAIL_FROM ?? 'NowCred <noreply@nowcred.in>'
 
 /* The palette, repeated here as literals: email clients strip <style> blocks
    and have never heard of a custom property, so every colour has to be inline. */
-const INK = '#222831'
-const SLATE = '#393e46'
-const TAUPE = '#948979'
-const SAND = '#dfd3b8'
-const PAPER = '#efe7d4'
-const RULE = '#d6c9ac'
+const INK = '#00226D'
+const SLATE = '#1a2a4a'
+const TAUPE = '#6b7a99'
+const SAND = '#ffffff'
+const PAPER = '#f5f6fa'
+const RULE = '#c8cfe8'
 
 const SERIF = "'Hoefler Text', Baskerville, 'Palatino Linotype', Palatino, Georgia, serif"
 const SANS = "'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif"
 const MONO = "'SF Mono', Menlo, Consolas, 'Courier New', monospace"
 
-/** The four descending bars, drawn as table cells because inline SVG is unreliable in mail. */
+/** The NowCred wordmark: "Now" in navy, "Cred" in red, as table cells for email clients. */
 function mark() {
-  const bar = (w: number, c: string) =>
-    `<tr><td style="padding:0 0 2px"><div style="width:${w}px;height:4px;background:${c};font-size:0;line-height:0">&nbsp;</div></td></tr>`
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0">
-    ${bar(20, SAND)}${bar(15, TAUPE)}${bar(10, '#5c6068')}${bar(5, SLATE)}
+    <tr><td style="font-family:'Hoefler Text',Baskerville,Georgia,serif;font-size:22px;font-weight:700;letter-spacing:-0.01em;line-height:1">
+      <span style="color:#ffffff">Now</span><span style="color:#F9002D">Cred</span>
+    </td></tr>
   </table>`
 }
 
@@ -36,19 +36,11 @@ function shell(inner: string) {
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;margin:0 auto">
       <tr>
         <td style="background:${INK};padding:22px 28px">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td style="padding-right:12px;vertical-align:middle">${mark()}</td>
-              <td style="vertical-align:middle">
-                <span style="font-family:${SERIF};font-size:20px;color:${SAND};letter-spacing:.01em">${SITE.wordmark.primary}</span>
-                <span style="font-family:${MONO};font-size:10px;color:${TAUPE};letter-spacing:.18em;text-transform:uppercase;padding-left:8px">${SITE.wordmark.secondary}</span>
-              </td>
-            </tr>
-          </table>
+          ${mark()}
         </td>
       </tr>
       <tr>
-        <td style="background:#f6f1e4;border:1px solid ${RULE};border-top:none;padding:28px">
+        <td style="background:#ffffff;border:1px solid ${RULE};border-top:none;padding:28px">
           ${inner}
         </td>
       </tr>
@@ -114,6 +106,7 @@ export async function sendAdminAlert({
   referenceId,
   name,
   phone,
+  city,
   email,
   facility,
   loanAmount,
@@ -121,7 +114,10 @@ export async function sendAdminAlert({
   referenceId: string
   name: string
   phone: string
-  email: string
+  city: string
+  /* Null when the customer chose to be phoned only. The alert still goes out —
+     an enquiry without an email is not a lesser lead. */
+  email: string | null
   facility: string
   loanAmount: string
 }) {
@@ -132,8 +128,9 @@ export async function sendAdminAlert({
     ['Reference', referenceId],
     ['Name', name],
     ['Phone', phone],
-    ['Email', email],
-    ['Facility', facility],
+    ['City', city || '—'],
+    ['Email', email || 'Phone only'],
+    ['Requirement', facility],
     ['Amount', loanAmount || '—'],
   ]
 

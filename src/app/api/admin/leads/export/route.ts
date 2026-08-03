@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
     { header: 'Received', key: 'createdAt', width: 20 },
     { header: 'Name', key: 'name', width: 22 },
     { header: 'Phone', key: 'phone', width: 16 },
+    { header: 'City', key: 'city', width: 18 },
     { header: 'Email', key: 'email', width: 28 },
     { header: 'Employment', key: 'businessType', width: 20 },
     { header: 'Facility', key: 'facility', width: 26 },
@@ -36,10 +37,10 @@ export async function GET(req: NextRequest) {
     { header: 'Status', key: 'status', width: 14 },
   ]
 
-  // Sand on ink, matching the site.
+  // Navy on white, matching the site.
   ws.getRow(1).eachCell((cell) => {
-    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF222831' } }
-    cell.font = { bold: true, color: { argb: 'FFDFD3B8' }, size: 10 }
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF00226D' } }
+    cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 10 }
     cell.alignment = { vertical: 'middle' }
   })
   ws.getRow(1).height = 22
@@ -50,11 +51,13 @@ export async function GET(req: NextRequest) {
       createdAt: l.createdAt.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
       name: l.name,
       phone: l.phone,
-      email: l.email,
-      businessType: l.businessType,
+      city: l.city,
+      // Empty rather than the string "null" for leads captured phone-only.
+      email: l.email ?? '',
+      businessType: l.businessType ?? '',
       facility: l.facility,
       loanAmount: l.loanAmount,
-      turnover: l.turnover,
+      turnover: l.turnover ?? '',
       status: l.status,
     }),
   )

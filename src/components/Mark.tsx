@@ -1,24 +1,23 @@
 /**
- * Four descending bars: steps down, and a balance going down. "Ippo" (一歩)
- * means one step, and a loan's whole job is to reach zero — the mark says both.
- *
- * The bar colours are tokens, not literals, so the mark inverts with the theme
- * instead of disappearing into a dark ground.
+ * NowCred logotype — "Now" in navy, "Cred" in red, set in Stardom (Fontshare).
+ * Rendered as HTML so the font loads from the CDN link in layout.tsx.
  */
-export default function Mark({ size = 22 }: { size?: number }) {
+export default function Mark({ size = 28 }: { size?: number }) {
   return (
-    <svg
+    <span
       className="mark"
-      width={(size * 20) / 22}
-      height={size}
-      viewBox="0 0 20 22"
+      style={{
+        fontFamily: 'var(--f-logo)',
+        fontSize: `${size}px`,
+        fontWeight: 700,
+        lineHeight: 1,
+        letterSpacing: '-0.01em',
+        userSelect: 'none',
+      }}
       aria-hidden="true"
-      focusable="false"
     >
-      <rect x="0" y="0" width="20" height="4" fill="var(--mark-1)" />
-      <rect x="0" y="6" width="15" height="4" fill="var(--mark-2)" />
-      <rect x="0" y="12" width="10" height="4" fill="var(--mark-3)" />
-      <rect x="0" y="18" width="5" height="4" fill="var(--mark-4)" />
-    </svg>
+      <span style={{ color: '#00226D' }}>Now</span>
+      <span style={{ color: '#F9002D' }}>Cred</span>
+    </span>
   )
 }

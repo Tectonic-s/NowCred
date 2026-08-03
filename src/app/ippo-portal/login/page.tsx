@@ -34,9 +34,7 @@ export default function PortalLogin() {
       <div className="center">
         <form className="panel" onSubmit={submit}>
           <div className="wordmark" style={{ marginBottom: '0.25rem' }}>
-            <Mark />
-            <b>{SITE.wordmark.primary}</b>
-            <i>{SITE.wordmark.secondary}</i>
+            <Mark size={28} />
           </div>
           <p className="fineprint">Staff portal</p>
 

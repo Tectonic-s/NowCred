@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Schedule from '@/components/Schedule'
-import { SERVICES, getServiceBySlug } from '@/lib/data/services'
+import MediaPlaceholder from '@/components/MediaPlaceholder'
+import { SERVICES, getServiceBySlug, requirementForSlug } from '@/lib/data/services'
 import { SITE } from '@/lib/data/content'
 
 interface Props {
@@ -32,9 +33,14 @@ export default function ServicePage({ params }: Props) {
       </div>
 
       <header className="pagehead">
-        <p className="fineprint">{s.category}</p>
-        <h1>{s.name}</h1>
-        <p className="lede">{s.shortDesc}</p>
+        <div className="split" style={{ alignItems: 'start', gap: 'clamp(2rem, 4vw, 3.5rem)' }}>
+          <div className="stack">
+            <p className="fineprint">{s.category}</p>
+            <h1>{s.name}</h1>
+            <p className="lede">{s.shortDesc}</p>
+          </div>
+          <MediaPlaceholder label={s.name} aspect="4/3" className="settle" />
+        </div>
       </header>
 
       {/* The plain-English line, given the weight it deserves. */}
@@ -48,19 +54,22 @@ export default function ServicePage({ params }: Props) {
       <section className="band rail">
         <p className="marginalia">How it works</p>
         <div>
-          <div className="stack">
-            <p className="lede">{s.fullDesc}</p>
-          </div>
+          <div className="split">
+            <div className="stack">
+              <p className="lede">{s.fullDesc}</p>
 
-          <div className="figures">
-            <div>
-              <span className="fineprint">How much</span>
-              <b>{s.loanRange}</b>
+              <div className="figures">
+                <div>
+                  <span className="fineprint">How much</span>
+                  <b>{s.loanRange}</b>
+                </div>
+                <div>
+                  <span className="fineprint">How long it takes</span>
+                  <b>{s.processingTime}</b>
+                </div>
+              </div>
             </div>
-            <div>
-              <span className="fineprint">How long it takes</span>
-              <b>{s.processingTime}</b>
-            </div>
+            <MediaPlaceholder label="How it works" aspect="3/4" />
           </div>
 
           <div className="columns columns--two" style={{ marginTop: '2.5rem' }}>
@@ -138,8 +147,8 @@ export default function ServicePage({ params }: Props) {
             tell us to proceed.
           </p>
           <div className="actions">
-            <Link className="btn" href={`/enquiry?facility=${encodeURIComponent(s.name)}`}>
-              Check your rate for {s.name.toLowerCase()}
+            <Link className="btn" href={`/enquiry?facility=${encodeURIComponent(requirementForSlug(s.slug))}`}>
+              Talk to an expert about {s.name.toLowerCase()}
             </Link>
             <a className="btn btn--quiet" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
               {SITE.phone}

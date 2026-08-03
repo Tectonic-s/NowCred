@@ -1,193 +1,250 @@
 import Link from 'next/link'
-import Schedule from '@/components/Schedule'
+import Image from 'next/image'
 import Reveal from '@/components/Reveal'
-import { SITE } from '@/lib/data/content'
-import { SERVICES } from '@/lib/data/services'
-import { buildSchedule, inr, inrShort } from '@/lib/loan'
-
-/* The representative example the whole page is built around. Every figure
-   quoted below is derived from it rather than typed by hand, so the copy can
-   never drift out of step with the schedule beside it. */
-const EG = { amount: 900000, rate: 11.9, months: 36 }
+import MediaPlaceholder from '@/components/MediaPlaceholder'
+import { SITE, TRUST, WHY_POINTS, JOURNEY, FUTURE_SOLUTIONS } from '@/lib/data/content'
+import { GROUP_ORDER, GROUP_COPY, servicesByGroup } from '@/lib/data/services'
 
 export default function HomePage() {
-  const { emi, totalRepayable, totalInterest } = buildSchedule(EG.amount, EG.rate, EG.months)
-
   return (
     <div className="sheet">
-      {/* ── the thesis: a schedule whose last line is zero ───────────────── */}
+      {/* ── HERO: full-bleed image, headline + CTA overlaid ──────────────── */}
       <section className="hero">
-        <div className="hero__grid">
-          <div className="stack settle" style={{ animationDelay: '40ms' }}>
-            <p className="fineprint">
-              Personal, property &amp; business loans &middot; {SITE.facts[0].figure} APR representative
-            </p>
-            <h1>A loan you can see the end of.</h1>
-            <p className="lede">
-              <em>Ippo</em> means one step. We find you a lender from our panel and show you the
-              whole schedule before you sign — every payment, the date it leaves your account, and
-              the last line, which is always zero.
-            </p>
-            <div className="actions">
-              <Link className="btn" href="/enquiry">
-                Check your rate
-              </Link>
-              <Link className="btn btn--quiet" href="/services">
-                See what we arrange
-              </Link>
+        <div className="hero__billboard settle">
+          <Image
+            src="/images/about/team.jpeg"
+            alt="NowCred team"
+            width={1600}
+            height={686}
+            className="hero__bg"
+            priority
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+          <div className="hero__overlay">
+            <div className="hero__copy">
+              <h1>The right loan.<br />From the right lender.</h1>
+              <p className="hero__sub">
+                {SITE.experienceYears} years of financial expertise — matching your profile to the
+                bank or NBFC that will actually say yes.
+              </p>
+              <div className="actions">
+                <Link className="btn" href="/enquiry">Talk to an expert</Link>
+                <Link className="btn btn--ghost" href="/services">Explore solutions</Link>
+              </div>
+              <p className="fineprint" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                No cost to you &middot; A conversation before any application
+              </p>
             </div>
-            <p className="fineprint">Two minutes &middot; No mark on your credit file</p>
           </div>
+        </div>
 
-          <Schedule amount={EG.amount} rate={EG.rate} months={EG.months} animate />
+        {/* ── quick-access product strip ──────────────────────────────────── */}
+        <div className="hero__strip">
+          {[
+            { label: 'Home Loan', href: '/services/home-loan' },
+            { label: 'Loan Against Property', href: '/services/lap' },
+            { label: 'Business Loan', href: '/services/business-loan' },
+            { label: 'Personal Loan', href: '/services/personal-loan' },
+            { label: 'Working Capital', href: '/services/working-capital' },
+          ].map((item) => (
+            <Link key={item.label} className="strip__item" href={item.href}>
+              <span>{item.label}</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* ── three facts ──────────────────────────────────────────────────── */}
-      <section className="facts" aria-label="At a glance">
-        {SITE.facts.map((f) => (
-          <div className="fact" key={f.label}>
-            <b>{f.figure}</b>
-            <span>{f.note}</span>
-          </div>
-        ))}
+      {/* ── trust, immediately after the hero ─────────────────────────────── */}
+      <section className="band band--tight" id="trust" aria-labelledby="trust-h">
+        <h2 className="sr-only" id="trust-h">
+          Why customers trust us
+        </h2>
+        <div className="trust">
+          {TRUST.map((t) => (
+            <article className="trust__item" key={t.label}>
+              <p className="trust__label">{t.label}</p>
+              <h3>{t.title}</h3>
+              <p>{t.note}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
-      {/* ── what a loan is made of ───────────────────────────────────────── */}
-      <section className="band rail" id="how">
+      {/* ── video: who we are ─────────────────────────────────────────────── */}
+      <section className="band video-band" id="about-video" aria-label="About NowCred">
+        <div className="video-band__inner">
+          <div className="stack">
+            <p className="trust__label">Who we are</p>
+            <h2 className="head">A conversation before any application.</h2>
+            <p className="lede">
+              {SITE.experienceYears} years of working inside the system — understanding how lenders
+              read a file, and how to present yours so the right doors open.
+            </p>
+            <Link className="btn btn--quiet" href="/about">Our story</Link>
+          </div>
+          <MediaPlaceholder
+            kind="video"
+            label="NowCred — who we are"
+            aspect="16/9"
+          />
+        </div>
+      </section>
+
+      {/* ── why not simply walk into one bank ─────────────────────────────── */}
+      <section className="band rail" id="why">
         <p className="marginalia">
-          Three things
+          Why not
           <br />
-          to settle
+          one bank
         </p>
         <div>
           <Reveal>
             <div className="stack">
-              <h2 className="head">One rate, one payment, one end date.</h2>
+              <h2 className="head">Every customer has a different financial profile.</h2>
               <p className="lede">
-                A loan only has three moving parts. Most lenders make you find them across four
-                screens and a PDF. We settle all three on one call, then put them in writing before
-                you agree to anything.
+                Banks and NBFCs each offer their own products, on their own criteria. {SITE.brand}{' '}
+                identifies the options that suit you — assessed on income, cash flow, existing
+                obligations, and what the funding is for.
               </p>
             </div>
           </Reveal>
 
-          <div className="columns">
-            <article className="column">
-              <h3>What you borrow</h3>
-              <p>
-                From ₹2 lakh to ₹25 crore depending on the facility. Ask for less than you are
-                approved for and nothing changes — there is no minimum draw and no charge for
-                funds you leave alone.
-              </p>
-              <p className="fineprint">₹2 lakh – ₹25 crore</p>
-            </article>
+          <div className="why-grid">
+            {WHY_POINTS.map((p, i) => (
+              <Reveal key={p.title} delay={i * 50}>
+                <article className="why-item">
+                  <span className="why-item__num" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="why-item__title">{p.title}</h3>
+                  <p className="why-item__note">{p.note}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
 
-            <article className="column">
-              <h3>How long for</h3>
-              <p>
-                Twelve months to thirty years, and you choose the date it leaves your account. Move
-                that date once a year, free, if your salary or billing cycle moves.
-              </p>
-              <p className="fineprint">12 – 360 months</p>
-            </article>
-
-            <article className="column">
-              <h3>What it costs</h3>
-              <p>
-                Quoted in rupees as well as percent, because a rate is hard to feel and a total is
-                not. On a fixed facility the rate is set on the day you sign and does not move.
-              </p>
-              <p className="fineprint">Fixed and floating both offered</p>
-            </article>
+          <div className="why-media">
+            <MediaPlaceholder label="Meeting / advisory" aspect="21/9" />
           </div>
         </div>
       </section>
 
-      {/* ── the plain-English promise ────────────────────────────────────── */}
-      <section className="band rail" id="plain">
-        <p className="marginalia">Plain English</p>
+      {/* ── the journey. Numbered because it genuinely is a sequence. ─────── */}
+      <section className="band rail" id="journey">
+        <p className="marginalia">How we work</p>
         <div>
-          <Reveal>
-            <div className="stack">
-              <h2 className="head">The same offer, written for a person.</h2>
-              <p className="lede">
-                Lending paperwork is written to satisfy a regulator, and it should be. But you
-                should not have to decode it to know what you are agreeing to — so we print both,
-                side by side, on every offer we bring you.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="translation">
-            <div className="translation__before">
-              <p className="fineprint">The representative example</p>
-              <code>
-                {inrShort(EG.amount)} over {EG.months} months @ {EG.rate}% p.a. (fixed).
-                <br />
-                {EG.months} monthly instalments of ₹{inr(emi)}.
-                <br />
-                Total charge for credit ₹{inr(totalInterest)}.
-                <br />
-                Total amount payable ₹{inr(totalRepayable)}.
-              </code>
-            </div>
+          <div className="split split--media-first">
+            <MediaPlaceholder label="Document review" aspect="3/4" />
             <div>
-              <p className="fineprint">The same thing, in words</p>
-              <p className="plain">
-                You would pay ₹{inr(emi)} on the same date every month for three years. The
-                borrowing costs you ₹{inr(totalInterest)} on top of the {inrShort(EG.amount)} — and
-                you can end it early, for nothing, whenever you like.
-              </p>
+              <Reveal>
+                <div className="stack">
+                  <h2 className="head">Five steps, in this order.</h2>
+                  <p className="lede">
+                    Nothing is submitted anywhere until the first two are done properly. That is most
+                    of the difference between a file that gets sanctioned and one that gets stuck.
+                  </p>
+                </div>
+              </Reveal>
+              <ol className="journey">
+                {JOURNEY.map((step, i) => (
+                  <Reveal key={step.title} delay={i * 60}>
+                    <li className="step">
+                      <span className="step__no" aria-hidden="true">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <div className="step__body">
+                        <h3>{step.title}</h3>
+                        <p>{step.note}</p>
+                      </div>
+                    </li>
+                  </Reveal>
+                ))}
+              </ol>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── the panel, and what we arrange ───────────────────────────────── */}
-      <section className="band rail" id="arrange">
-        <p className="marginalia">What we arrange</p>
+      {/* ── solutions, grouped the way a customer feels them ──────────────── */}
+      <section className="band rail" id="solutions">
+        <p className="marginalia">Solutions</p>
         <div>
           <Reveal>
             <div className="stack">
-              <h2 className="head">Eleven facilities, one conversation.</h2>
+              <h2 className="head">Matched to your profile, not to a catalogue.</h2>
               <p className="lede">
-                We are not a lender. We hold a panel of banks and NBFCs, and our job is to know
-                which of them says yes to a file like yours — and at what price.
+                The right facility depends on what you own, what you earn, and what you are funding.
+                These are the shapes money comes in — which one suits you is the conversation.
               </p>
             </div>
           </Reveal>
 
-          <div style={{ marginTop: '2.5rem' }}>
-            {SERVICES.slice(0, 5).map((s) => (
-              <Link className="entry" href={`/services/${s.slug}`} key={s.slug}>
-                <h3>{s.name}</h3>
-                <p>{s.shortDesc}</p>
+          {GROUP_ORDER.map((group) => (
+            <div className="group" key={group}>
+              <div className="catrule">
+                <h2>{group} solutions</h2>
+                <span className="fineprint">{GROUP_COPY[group].caption}</span>
+              </div>
+              <p className="group__blurb">{GROUP_COPY[group].blurb}</p>
+
+              {servicesByGroup(group)
+                .slice(0, 4)
+                .map((s) => (
+                  <Link className="entry" href={`/services/${s.slug}`} key={s.slug}>
+                    <h3>{s.name}</h3>
+                    <p>{s.shortDesc}</p>
+                    <span className="entry__rate">
+                      {s.category}
+                      <small>{s.processingTime}</small>
+                    </span>
+                  </Link>
+                ))}
+            </div>
+          ))}
+
+          {/* Roadmap, marked as such. Listing these as live services would be a
+              claim we cannot honour today. */}
+          <div className="group">
+            <div className="catrule">
+              <h2>Future financial solutions</h2>
+              <span className="fineprint">In development</span>
+            </div>
+            <p className="group__blurb">
+              The advisory relationship does not end at borrowing. These are being built next.
+            </p>
+            {FUTURE_SOLUTIONS.map((f) => (
+              <div className="entry entry--static" key={f.name}>
+                <h3>{f.name}</h3>
+                <p>{f.note}</p>
                 <span className="entry__rate">
-                  {s.rateFrom}
-                  <small>{s.rateFrom === 'Commission-based' ? 'priced on value' : 'from'}</small>
+                  Soon
+                  <small>in development</small>
                 </span>
-              </Link>
+              </div>
             ))}
           </div>
 
           <div className="actions" style={{ marginTop: '2rem' }}>
             <Link className="btn btn--quiet" href="/services">
-              All eleven facilities
+              All solutions in detail
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── the fee schedule, in full ────────────────────────────────────── */}
+      {/* ── what we charge, in full ───────────────────────────────────────── */}
       <section className="band rail" id="cost">
-        <p className="marginalia">The whole cost</p>
+        <p className="marginalia">What it costs</p>
         <div>
           <Reveal>
             <div className="stack">
-              <h2 className="head">The entire fee schedule fits on a postcard.</h2>
+              <h2 className="head">Our guidance costs you nothing, and we say who pays us.</h2>
               <p className="lede">
-                This is the whole list. There is no longer version of it filed somewhere else.
+                An adviser paid by the lender has a conflict of interest. The answer to that is to
+                state it plainly — so here is every charge, including the ones that are not ours.
               </p>
             </div>
           </Reveal>
@@ -197,7 +254,7 @@ export default function HomePage() {
               <thead>
                 <tr>
                   <th scope="col">What it is</th>
-                  <th scope="col">What it costs</th>
+                  <th scope="col">What it costs you</th>
                 </tr>
               </thead>
               <tbody>
@@ -216,29 +273,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── one step ─────────────────────────────────────────────────────── */}
-      <section className="band rail" id="rate">
-        <p className="marginalia">One step</p>
+      {/* ── where we work ─────────────────────────────────────────────────── */}
+      <section className="band rail" id="region">
+        <p className="marginalia">Where we work</p>
         <div className="stack">
-          <h2 style={{ fontSize: 'clamp(1.875rem, 4vw, 2.75rem)', maxWidth: '21ch' }}>
-            Find out what you would actually be offered.
+          <h2 className="head">
+            Built in {SITE.region.primary}, for {SITE.region.primary}.
           </h2>
-          <p className="lede">
-            Answer seven questions and an adviser will call you within {SITE.responseTime} with the
-            real rate, the real monthly payment, and the full schedule down to the last line —
-            before you decide anything, and without leaving a mark on your credit file.
-          </p>
-          <div className="actions">
-            <Link className="btn" href="/enquiry">
-              Check your rate
-            </Link>
-            <a className="btn btn--quiet" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
-              Talk to someone first
-            </a>
+          <p className="lede">{SITE.region.statement}</p>
+          <div className="namegrid" aria-label={`Cities served across ${SITE.region.primary}`}>
+            {SITE.region.cities.map((c) => (
+              <span key={c}>{c}</span>
+            ))}
           </div>
           <p className="fineprint">
-            {SITE.hours} &middot; A person answers
+            Elsewhere in {SITE.region.primary} &middot; we still take the call
           </p>
+        </div>
+      </section>
+
+      {/* ── the ask ───────────────────────────────────────────────────────── */}
+      <section className="band rail" id="talk">
+        <p className="marginalia">One step</p>
+        <div className="split">
+          <div className="stack">
+            <h2 style={{ fontSize: 'clamp(1.875rem, 4vw, 2.75rem)', maxWidth: '21ch' }}>
+              Start with a conversation, not an application.
+            </h2>
+            <p className="lede">
+              Tell us what you need and where you are. An adviser will call you within{' '}
+              {SITE.responseTime} to understand the requirement properly — before anything is
+              submitted to any institution, and before you commit to anything at all.
+            </p>
+            <div className="actions">
+              <Link className="btn" href="/enquiry">
+                Request a consultation
+              </Link>
+              <a className="btn btn--quiet" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
+                Talk to an expert
+              </a>
+            </div>
+            <p className="fineprint">{SITE.hours} &middot; A person answers</p>
+          </div>
+          <MediaPlaceholder label="Branch / team" aspect="4/3" />
         </div>
       </section>
     </div>

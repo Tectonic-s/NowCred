@@ -1,4 +1,4 @@
-import type { Service } from '@/types'
+import type { Service, ServiceGroup } from '@/types'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    What Ippo arranges.
@@ -11,6 +11,7 @@ import type { Service } from '@/types'
 export const SERVICES: Service[] = [
   {
     slug: 'loan-against-property',
+    group: 'Secured',
     name: 'Loan Against Property',
     category: 'Secured',
     shortDesc: 'Borrow against a house, a shop, or a shed you already own.',
@@ -43,6 +44,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'home-loan',
+    group: 'Secured',
     name: 'Home Loan',
     category: 'Property',
     shortDesc: 'Buy a finished home, or draw down in stages while one is built.',
@@ -74,6 +76,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'personal-loan',
+    group: 'Unsecured',
     name: 'Personal Loan',
     category: 'Unsecured',
     shortDesc: 'A fixed sum with nothing pledged against it.',
@@ -105,6 +108,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'business-loan',
+    group: 'Unsecured',
     name: 'Business Loan',
     category: 'Unsecured',
     shortDesc: 'Working funds for a trading or manufacturing business, unsecured.',
@@ -136,6 +140,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'balance-transfer',
+    group: 'Secured',
     name: 'Balance Transfer',
     category: 'Refinancing',
     shortDesc: 'Move an existing loan somewhere cheaper.',
@@ -166,6 +171,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'machinery-loan',
+    group: 'Secured',
     name: 'Machinery Loan',
     category: 'Equipment',
     shortDesc: 'Buy plant and equipment without draining working capital.',
@@ -197,6 +203,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'commercial-vehicle-loan',
+    group: 'Secured',
     name: 'Commercial Vehicle Loan',
     category: 'Vehicles',
     shortDesc: 'Trucks, buses, tippers, and light commercial vehicles.',
@@ -228,6 +235,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'auto-loan',
+    group: 'Secured',
     name: 'Auto Loan',
     category: 'Vehicles',
     shortDesc: 'A car, new or used, funded up to the full on-road price.',
@@ -259,6 +267,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'cash-credit',
+    group: 'Secured',
     name: 'Cash Credit',
     category: 'Working capital',
     shortDesc: 'A limit you draw against as you need it, secured on stock and receivables.',
@@ -290,6 +299,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'dropline-overdraft',
+    group: 'Secured',
     name: 'Dropline Overdraft',
     category: 'Working capital',
     shortDesc: 'An overdraft whose limit steps down on a set schedule.',
@@ -321,6 +331,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'letter-of-credit',
+    group: 'Secured',
     name: 'Letter of Credit',
     category: 'Trade',
     shortDesc: 'A bank standing behind your payment so a supplier will ship.',
@@ -352,6 +363,31 @@ export const SERVICES: Service[] = [
   },
 ]
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Grouping for the solutions page.
+
+   Secured first because it is where most of the value sits for the customer —
+   the cheapest money available to them is almost always money lent against
+   something they already own, and that is the point an adviser makes early.
+   ───────────────────────────────────────────────────────────────────────────── */
+export const GROUP_ORDER: ServiceGroup[] = ['Secured', 'Unsecured']
+
+export const GROUP_COPY: Record<ServiceGroup, { blurb: string; caption: string }> = {
+  Secured: {
+    blurb:
+      'Money lent against something you already own — a house, a shop, a machine, a vehicle. The lender has an asset to fall back on, so the rate is lower and the term can run longer.',
+    caption: 'Backed by an asset',
+  },
+  Unsecured: {
+    blurb:
+      'Nothing of yours is pledged. The lender is relying on your income, your record, and your business’s numbers, which is why the rate is higher and the term is shorter.',
+    caption: 'Backed by your profile',
+  },
+}
+
+export const servicesByGroup = (group: ServiceGroup) =>
+  SERVICES.filter((s) => s.group === group)
+
 export const CATEGORY_ORDER = [
   'Secured',
   'Property',
@@ -365,5 +401,28 @@ export const CATEGORY_ORDER = [
 
 export const getServiceBySlug = (slug: string) => SERVICES.find((s) => s.slug === slug)
 
-/** Facility options for the enquiry form — the product names plus an escape hatch. */
-export const FACILITIES = [...SERVICES.map((s) => s.name), 'Not sure — I need advice']
+/* ─────────────────────────────────────────────────────────────────────────────
+   Service → enquiry-form requirement.
+
+   The form asks a short, customer-language question ("what you need") rather
+   than naming all eleven products, so a "talk to us about this" link from a
+   product page has to be translated into one of those options. Without this
+   the select receives a value it has no option for and silently renders blank.
+   ───────────────────────────────────────────────────────────────────────────── */
+const REQUIREMENT_BY_SLUG: Record<string, string> = {
+  'home-loan': 'Home loan',
+  'loan-against-property': 'Loan against property',
+  'personal-loan': 'Personal loan',
+  'business-loan': 'Business loan',
+  'balance-transfer': 'Refinancing an existing loan',
+  'machinery-loan': 'Vehicle or machinery',
+  'commercial-vehicle-loan': 'Vehicle or machinery',
+  'auto-loan': 'Vehicle or machinery',
+  'cash-credit': 'Working capital',
+  'dropline-overdraft': 'Working capital',
+  'letter-of-credit': 'Working capital',
+}
+
+export const requirementForSlug = (slug: string) =>
+  REQUIREMENT_BY_SLUG[slug] ?? 'Not sure — I would like advice'
+

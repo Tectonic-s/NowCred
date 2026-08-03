@@ -3,9 +3,9 @@ import EnquiryForm from '@/components/EnquiryForm'
 import { SITE } from '@/lib/data/content'
 
 export const metadata: Metadata = {
-  title: 'Check your rate',
+  title: 'Request a consultation',
   description:
-    'Seven questions, two minutes, and no mark on your credit file. An adviser will call with the real rate and the full schedule.',
+    'Five questions, two minutes, no cost. An adviser will call to understand your requirement before anything is submitted to any institution.',
 }
 
 export default function EnquiryPage({
@@ -16,20 +16,20 @@ export default function EnquiryPage({
   return (
     <div className="sheet">
       <header className="pagehead">
-        <p className="fineprint">Two minutes &middot; No mark on your credit file</p>
-        <h1>Check your rate.</h1>
+        <p className="fineprint">Five questions &middot; two minutes &middot; no cost</p>
+        <h1>Request a consultation.</h1>
         <p className="lede">
-          Answer these and an adviser will call you within {SITE.responseTime} with what you would
-          actually be offered — the rate, the monthly payment, and the schedule down to the last
-          line. Nothing here commits you to anything.
+          Tell us the essentials and an adviser will call you within {SITE.responseTime} to
+          understand the requirement properly. Nothing is submitted to any institution, and nothing
+          here commits you to anything.
         </p>
       </header>
 
       <section className="band rail" style={{ borderTop: 'none' }}>
         <p className="marginalia">
-          About you,
+          The essentials,
           <br />
-          and the money
+          nothing more
         </p>
         <div style={{ maxWidth: '40rem' }}>
           <EnquiryForm defaultFacility={searchParams.facility ?? ''} />

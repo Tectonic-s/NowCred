@@ -7,23 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// A first-contact enquiry.
+///
+/// The form deliberately asks for very little: name, phone, city, what they
+/// need, and roughly how much. Everything an adviser needs beyond that is
+/// gathered on the call, where the answers are better anyway. The optional
+/// columns below are either collected later in the portal or carried by older
+/// leads captured under the longer form — which is why they are nullable
+/// rather than deleted.
 model Enquiry {
   id           Int      @id @default(autoincrement())
   referenceId  String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  // Asked on the form.
   name         String
   phone        String
-  email        String
-  businessType String
+  city         String   @default("")
   facility     String
   loanAmount   String
-  turnover     String
+
+  // Optional on the form, or filled in later by an adviser.
+  email        String?
+  businessType String?
+  turnover     String?
   message      String?
+
+  // Portal-side workflow.
   status       String   @default("New")
   assignedTo   String?
   notes        String?
   deleted      Boolean  @default(false)
+
+  @@index([deleted, createdAt])
+  @@index([status])
 }
 
 model AdminUser {

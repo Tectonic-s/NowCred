@@ -20,9 +20,7 @@ export default function Nav() {
       <div className="sheet">
         <div className="masthead__inner">
           <Link className="wordmark" href="/">
-            <Mark />
-            <b>{SITE.wordmark.primary}</b>
-            <i>{SITE.wordmark.secondary}</i>
+            <Mark size={28} />
           </Link>
 
           <nav className="nav" aria-label="Main">
@@ -41,7 +39,7 @@ export default function Nav() {
             {/* Hidden on phones by CSS — it collides with the wordmark there,
                 and the drawer carries it instead. */}
             <Link className="btn nav__cta" href="/enquiry">
-              Check your rate
+              Talk to an expert
             </Link>
 
             <button
@@ -68,7 +66,7 @@ export default function Nav() {
               </Link>
             ))}
             <Link className="btn" href="/enquiry" style={{ marginTop: '1rem' }}>
-              Check your rate
+              Talk to an expert
             </Link>
           </div>
         )}

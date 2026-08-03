@@ -2,31 +2,46 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { BUSINESS_TYPES, AMOUNT_RANGES } from '@/lib/data/content'
-import { FACILITIES } from '@/lib/data/services'
+import { REQUIREMENT_TYPES, AMOUNT_RANGES, SITE } from '@/lib/data/content'
+
+/* First contact asks for five things and no more.
+
+   Everything an adviser actually needs — business vintage, obligations,
+   turnover, security available — comes out of the call, where the answers are
+   better and the customer is not guessing at a dropdown. A long form on a page
+   like this does not qualify the lead, it loses it.
+
+   Email stays on the form but stays optional: some people would rather only be
+   phoned, and refusing their enquiry over a missing email address is a
+   self-inflicted wound. */
 
 interface FormState {
   name: string
   phone: string
-  email: string
-  businessType: string
+  city: string
   facility: string
   loanAmount: string
-  turnover: string
+  email: string
   message: string
   consent: boolean
 }
 
 export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?: string }) {
   const router = useRouter()
+
+  /* A value the select has no option for renders as blank, which would leave a
+     required field looking answered when it is not. Anything unrecognised —
+     a stale link, a hand-edited query string — falls back to empty so the
+     customer is asked properly. */
+  const prefill = REQUIREMENT_TYPES.includes(defaultFacility) ? defaultFacility : ''
+
   const [form, setForm] = useState<FormState>({
     name: '',
     phone: '',
-    email: '',
-    businessType: '',
-    facility: defaultFacility,
+    city: '',
+    facility: prefill,
     loanAmount: '',
-    turnover: '',
+    email: '',
     message: '',
     consent: false,
   })
@@ -42,10 +57,14 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
     if (!form.name.trim()) e.name = 'We need a name to put on the file.'
     if (!/^[6-9]\d{9}$/.test(form.phone.replace(/[\s-]/g, '')))
       e.phone = 'Ten digits, starting 6 to 9. No country code needed.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = "That address is missing an @ or a domain — check it and we'll send the reference there."
-    if (!form.businessType) e.businessType = 'Pick the closest description.'
-    if (!form.facility) e.facility = "Pick one, or choose “Not sure” and we'll work it out on the call."
+    if (!form.city.trim())
+      e.city = 'The town or city you are in — it decides which lenders can help.'
+    if (!form.facility)
+      e.facility = 'Pick the closest one, or choose “Not sure” and we will work it out on the call.'
+    if (!form.loanAmount) e.loanAmount = 'A rough range is enough. It can change later.'
+    // Only validated when filled in, because it is optional.
+    if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      e.email = 'That address is missing an @ or a domain — check it, or leave it blank.'
     if (!form.consent) e.consent = 'We need your agreement before we can call you.'
     return e
   }
@@ -135,51 +154,32 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
       </div>
 
       <div className="form__pair">
-        <div className={field('email')}>
-          <label htmlFor="email">Email</label>
+        <div className={field('city')}>
+          <label htmlFor="city">Town or city</label>
           <input
-            id="email"
-            type="email"
+            id="city"
             className="input"
-            value={form.email}
-            onChange={(e) => set('email', e.target.value)}
-            aria-invalid={!!errors.email}
-            aria-describedby={describedBy('email')}
-            autoComplete="email"
+            value={form.city}
+            onChange={(e) => set('city', e.target.value)}
+            aria-invalid={!!errors.city}
+            aria-describedby={describedBy('city')}
+            autoComplete="address-level2"
+            list="city-suggestions"
           />
-          {errors.email && (
-            <p className="err" id="email-err">
-              {errors.email}
-            </p>
-          )}
-        </div>
-
-        <div className={field('businessType')}>
-          <label htmlFor="businessType">What you do</label>
-          <select
-            id="businessType"
-            className="select"
-            value={form.businessType}
-            onChange={(e) => set('businessType', e.target.value)}
-            aria-invalid={!!errors.businessType}
-            aria-describedby={describedBy('businessType')}
-          >
-            <option value="">Select</option>
-            {BUSINESS_TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
+          {/* Suggestions, not a closed list — enquiries come from towns that are
+              not on it, and a select would turn those people away. */}
+          <datalist id="city-suggestions">
+            {SITE.region.cities.map((c) => (
+              <option key={c} value={c} />
             ))}
-          </select>
-          {errors.businessType && (
-            <p className="err" id="businessType-err">
-              {errors.businessType}
+          </datalist>
+          {errors.city && (
+            <p className="err" id="city-err">
+              {errors.city}
             </p>
           )}
         </div>
-      </div>
 
-      <div className="form__pair">
         <div className={field('facility')}>
           <label htmlFor="facility">What you need</label>
           <select
@@ -191,7 +191,7 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
             aria-describedby={describedBy('facility')}
           >
             <option value="">Select</option>
-            {FACILITIES.map((f) => (
+            {REQUIREMENT_TYPES.map((f) => (
               <option key={f} value={f}>
                 {f}
               </option>
@@ -203,32 +203,17 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
             </p>
           )}
         </div>
-
-        <div className="field">
-          <label htmlFor="loanAmount">How much (optional)</label>
-          <select
-            id="loanAmount"
-            className="select"
-            value={form.loanAmount}
-            onChange={(e) => set('loanAmount', e.target.value)}
-          >
-            <option value="">Select a range</option>
-            {AMOUNT_RANGES.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
-      <div className="field">
-        <label htmlFor="turnover">Annual income or turnover (optional)</label>
+      <div className={field('loanAmount')}>
+        <label htmlFor="loanAmount">Approximately how much</label>
         <select
-          id="turnover"
+          id="loanAmount"
           className="select"
-          value={form.turnover}
-          onChange={(e) => set('turnover', e.target.value)}
+          value={form.loanAmount}
+          onChange={(e) => set('loanAmount', e.target.value)}
+          aria-invalid={!!errors.loanAmount}
+          aria-describedby={describedBy('loanAmount')}
         >
           <option value="">Select a range</option>
           {AMOUNT_RANGES.map((r) => (
@@ -237,22 +222,58 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
             </option>
           ))}
         </select>
+        {errors.loanAmount && (
+          <p className="err" id="loanAmount-err">
+            {errors.loanAmount}
+          </p>
+        )}
       </div>
 
-      <div className="field">
-        <label htmlFor="message">Anything we should know (optional)</label>
-        <textarea
-          id="message"
-          className="textarea"
-          value={form.message}
-          onChange={(e) => set('message', e.target.value)}
-          placeholder="What the money is for, when you need it, anything a lender might ask about."
-        />
-      </div>
+      {/* Folded away rather than removed. Someone who wants to explain their
+          situation up front should be able to, without it being the price of
+          entry for everyone else. */}
+      <details className="more">
+        <summary>Add an email or a note (optional)</summary>
+        <div className="more__body">
+          <div className={field('email')}>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              className="input"
+              value={form.email}
+              onChange={(e) => set('email', e.target.value)}
+              aria-invalid={!!errors.email}
+              aria-describedby={describedBy('email')}
+              autoComplete="email"
+            />
+            <p className="hint">
+              We send your reference number here. Leave it blank to be phoned only.
+            </p>
+            {errors.email && (
+              <p className="err" id="email-err">
+                {errors.email}
+              </p>
+            )}
+          </div>
+
+          <div className="field">
+            <label htmlFor="message">Anything we should know</label>
+            <textarea
+              id="message"
+              className="textarea"
+              value={form.message}
+              onChange={(e) => set('message', e.target.value)}
+              placeholder="What the money is for, when you need it, or anything you would rather say before the call."
+            />
+          </div>
+        </div>
+      </details>
 
       <div className={errors.consent ? 'field field--invalid' : 'field'}>
         <label className="consent">
           <input
+            id="consent"
             type="checkbox"
             checked={form.consent}
             onChange={(e) => set('consent', e.target.checked)}
@@ -268,7 +289,7 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
             <a className="textlink" href="/terms" target="_blank" rel="noopener noreferrer">
               terms
             </a>
-            , and I&rsquo;m happy for Ippo to contact me about this enquiry.
+            , and I&rsquo;m happy for {SITE.shortName} to contact me about this enquiry.
           </span>
         </label>
         {errors.consent && (
@@ -285,11 +306,11 @@ export default function EnquiryForm({ defaultFacility = '' }: { defaultFacility?
       )}
 
       <button className="btn btn--block" type="submit" disabled={loading}>
-        {loading ? 'Sending…' : 'Send enquiry'}
+        {loading ? 'Sending…' : 'Request a consultation'}
       </button>
 
       <p className="fineprint">
-        Nothing is committed &middot; No mark on your credit file
+        Nothing is committed &middot; No application is made on your behalf
       </p>
     </form>
   )

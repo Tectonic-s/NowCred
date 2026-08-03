@@ -9,9 +9,7 @@ export default function Footer() {
       <div className="sheet">
         <div className="colophon__inner">
           <Link className="wordmark" href="/" aria-label={`${SITE.brand}, back to top`}>
-            <Mark />
-            <b>{SITE.wordmark.primary}</b>
-            <i>{SITE.wordmark.secondary}</i>
+            <Mark size={28} />
           </Link>
 
           <div className="colophon__links">
@@ -19,10 +17,10 @@ export default function Footer() {
               <h4>Borrowing</h4>
               <ul>
                 <li>
-                  <Link href="/enquiry">Check your rate</Link>
+                  <Link href="/enquiry">Talk to an expert</Link>
                 </li>
                 <li>
-                  <Link href="/services">What we arrange</Link>
+                  <Link href="/services">Solutions</Link>
                 </li>
                 {SERVICES.slice(0, 3).map((s) => (
                   <li key={s.slug}>

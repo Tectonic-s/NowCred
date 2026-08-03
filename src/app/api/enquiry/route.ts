@@ -43,25 +43,42 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { name, phone, email, businessType, facility, loanAmount, turnover, message, consent } = body
+    const { name, phone, city, facility, loanAmount, email, message, consent } = body
 
-    if (!name?.trim()) return NextResponse.json({ error: 'Name required' }, { status: 400 })
-    if (!phone?.trim()) return NextResponse.json({ error: 'Phone required' }, { status: 400 })
-    if (!email?.trim()) return NextResponse.json({ error: 'Email required' }, { status: 400 })
-    if (!businessType) return NextResponse.json({ error: 'Employment type required' }, { status: 400 })
-    if (!facility) return NextResponse.json({ error: 'Facility required' }, { status: 400 })
-    if (!consent) return NextResponse.json({ error: 'Consent required' }, { status: 400 })
+    /* Mirrors the five fields the form asks for, plus consent. Email is
+       deliberately not required — see the note in EnquiryForm. These strings
+       are shown to the customer verbatim, so they are written for a person
+       rather than for a log. */
+    if (!name?.trim())
+      return NextResponse.json({ error: 'Please tell us your name.' }, { status: 400 })
+    if (!/^[6-9]\d{9}$/.test(String(phone ?? '').replace(/[\s-]/g, '')))
+      return NextResponse.json(
+        { error: 'That mobile number does not look right — ten digits, starting 6 to 9.' },
+        { status: 400 },
+      )
+    if (!city?.trim())
+      return NextResponse.json({ error: 'Please tell us which town or city you are in.' }, { status: 400 })
+    if (!facility)
+      return NextResponse.json({ error: 'Please choose what you need.' }, { status: 400 })
+    if (!loanAmount)
+      return NextResponse.json({ error: 'Please choose a rough amount.' }, { status: 400 })
+    if (email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+      return NextResponse.json(
+        { error: 'That email address is not valid — check it, or leave it blank.' },
+        { status: 400 },
+      )
+    if (!consent)
+      return NextResponse.json({ error: 'We need your agreement before we can contact you.' }, { status: 400 })
 
     const enquiry = await prisma.enquiry.create({
       data: {
         referenceId: genRef(),
         name: name.trim().slice(0, 120),
         phone: phone.trim().slice(0, 20),
-        email: email.trim().toLowerCase().slice(0, 254),
-        businessType,
+        city: city.trim().slice(0, 80),
         facility,
-        loanAmount: (loanAmount ?? '').toString().slice(0, 50),
-        turnover: (turnover ?? '').toString().slice(0, 50),
+        loanAmount: String(loanAmount).slice(0, 50),
+        email: email?.trim().toLowerCase().slice(0, 254) || null,
         message: message?.trim().slice(0, 1000) || null,
       },
     })
@@ -70,16 +87,21 @@ export async function POST(req: NextRequest) {
     try {
       const { sendConfirmation, sendAdminAlert } = await import('@/lib/email')
       await Promise.allSettled([
-        sendConfirmation({
-          to: enquiry.email,
-          name: enquiry.name,
-          referenceId: enquiry.referenceId,
-          facility: enquiry.facility,
-        }),
+        // No address given means no confirmation to send — that is a valid
+        // enquiry, not a failure.
+        enquiry.email
+          ? sendConfirmation({
+              to: enquiry.email,
+              name: enquiry.name,
+              referenceId: enquiry.referenceId,
+              facility: enquiry.facility,
+            })
+          : Promise.resolve(),
         sendAdminAlert({
           referenceId: enquiry.referenceId,
           name: enquiry.name,
           phone: enquiry.phone,
+          city: enquiry.city,
           email: enquiry.email,
           facility: enquiry.facility,
           loanAmount: enquiry.loanAmount,
