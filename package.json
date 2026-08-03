@@ -1,0 +1,35 @@
+{
+  "name": "ippo-loans",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5040",
+    "build": "next build",
+    "start": "next start",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:seed-admin": "node scripts/seed-admin.js",
+    "vercel-build": "prisma generate && next build"
+  },
+  "dependencies": {
+    "@prisma/client": "^5",
+    "bcryptjs": "^2",
+    "exceljs": "^4",
+    "nanoid": "^5",
+    "next": "14.2.5",
+    "next-auth": "^4",
+    "react": "^18",
+    "react-dom": "^18",
+    "resend": "^3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "prisma": "^5",
+    "typescript": "^5"
+  }
+}
