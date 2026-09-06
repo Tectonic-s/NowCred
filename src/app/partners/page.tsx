@@ -50,13 +50,7 @@ export default function PartnersPage() {
           <h2>NBFCs</h2>
         </div>
         <div className="lendergrid">
-          {SITE.nbfcs?.map((n: string) => (
-            <LenderCard
-              key={n}
-              name={n}
-              logo={`/logos/nbfcs/${n.toLowerCase().replace(/\s+/g, '-')}.png`}
-            />
-          )) ?? SITE.lenders.nbfcs.map((n) => (
+          {SITE.lenders.nbfcs.map((n) => (
             <LenderCard
               key={n}
               name={n}
