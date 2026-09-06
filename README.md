@@ -1,7 +1,6 @@
-# Ippo Loan Finserv
+# NowCred
 
-A loan aggregator site. *Ippo* (一歩) means "one step" — the product promise is that
-you see the whole repayment schedule, down to the last line, before you sign.
+A loan advisory and facilitation platform. NowCred helps customers find the right financial solution from leading banks and NBFCs — based on their profile, not a catalogue.
 
 Next.js 14 (App Router) · TypeScript · Prisma · PostgreSQL · NextAuth · Resend.
 
@@ -13,11 +12,11 @@ Next.js 14 (App Router) · TypeScript · Prisma · PostgreSQL · NextAuth · Res
 
 | Route | What it is |
 | --- | --- |
-| `/` | Landing page. Hero carries a live amortising schedule. |
-| `/services` | The facilities we arrange, grouped by category. |
-| `/services/[slug]` | One facility: rates, eligibility, documents, timeline. |
-| `/about` | Who we are. |
-| `/partners` | The lender panel. |
+| `/` | Landing page. Full-bleed hero, product quick-access strip, trust indicators, video section, why-not-one-bank, journey, solutions, fees, CTA. |
+| `/services` | All facilities grouped by category, with a video section and image placeholders. |
+| `/services/[slug]` | One facility: plain-English summary, eligibility, documents, worked amortisation schedule. |
+| `/about` | Founding story, beliefs, fees disclosure, process, offices. |
+| `/partners` | The lender panel — banks and NBFCs listed by name. |
 | `/enquiry` | The enquiry form — the only conversion point on the site. |
 | `/thank-you` | Confirmation, shows the reference ID. |
 | `/privacy`, `/terms` | Legal. |
@@ -57,43 +56,51 @@ enquiry form, the portal, the export — needs the database.
 
 ---
 
+## Assets
+
+Stock images and videos go in `public/images/` and `public/videos/`. Each
+subfolder has a `README.md` listing which placeholder it maps to and the
+suggested filename.
+
+| Folder | Used on |
+| --- | --- |
+| `public/images/home/` | Home page sections |
+| `public/images/about/` | About page (also used in hero) |
+| `public/images/services/` | Services pages |
+| `public/images/partners/` | Partners page |
+| `public/videos/` | Video band sections |
+
+The favicon (`src/app/icon.png`) is the NC monogram mark.
+
+---
+
 ## Design
 
-The design language is deliberate and documented in one place: the token block
-at the top of `src/app/globals.css`. Four colours, taken from a fixed palette:
-
-```
-#222831   #393e46   #948979   #dfd3b8
-```
+The design language is documented in the token block at the top of
+`src/app/globals.css`. Brand palette: navy `#00226D`, red `#F9002D`.
 
 Components only ever reference tokens, never raw hex, so retheming is a single
-block. Both light and dark are first-class — dark is not an inversion, it's a
-second set of token values.
+block. Both light and dark modes are first-class.
 
 Type is a transitional serif for display, a humanist sans for body, and a
-monospace for every figure on the site. Figures use `tabular-nums` everywhere
-they line up in a column, which is most places.
+monospace for every figure. Figures use `tabular-nums` everywhere they line up
+in a column.
 
 House rules, if you're extending it:
 
 - Hairlines, not cards. No shadows, no gradients, no glassmorphism.
 - Motion is one settle on load and hover states. Nothing scroll-triggered.
 - Money is formatted through `src/lib/loan.ts`. Don't hand-roll it.
-- Structural devices encode something true. Don't number things that aren't a
-  sequence.
+- Structural devices encode something true. Don't number things that aren't a sequence.
 
 ---
 
 ## The schedule
 
-`src/lib/loan.ts` is the only place amortisation is calculated. It's a standard
+`src/lib/loan.ts` is the only place amortisation is calculated. Standard
 annuity: `pmt = P · r / (1 − (1 + r)^−n)`, interest accrued monthly on the
-outstanding balance, with the final instalment adjusted to absorb rounding so
-the closing balance lands on exactly zero.
+outstanding balance, final instalment adjusted so the closing balance lands on
+exactly zero.
 
-That last property is load-bearing. The whole page is built on the claim that
-the last line is zero, so if you change this file, keep it true.
-
-Rates shown across the site are a representative example and are labelled as
-such. Replace them with real figures before this goes near the public — lending
-disclosures are regulated copy.
+Rates shown on service pages are representative examples, labelled as such.
+Replace with real figures before going live — lending disclosures are regulated copy.
